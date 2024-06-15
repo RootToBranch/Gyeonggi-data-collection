@@ -78,7 +78,7 @@ for path in file_list:
     columns = ["연도", "시간대", "교통량"]
 
 
-    
+    count = 0
     # 데이터의 길이만큼 반복
     for k in range(len(data)):
         
@@ -90,10 +90,12 @@ for path in file_list:
 
             if str(data['방향'].iloc[k]) != "양방향":
                 continue
+                
 
             if str(data['호선구분'].iloc[k]) == "고속국도" and data['차종'].iloc[k] == "합계":
-                if unique_number_column.startswith("0013") or unique_number_column.startswith("13"): 
-                    
+                
+                if unique_number_column.startswith("0013") or (unique_number_column.startswith("13") and len(str(unique_number_column)) == 3):
+                        
                     if str(data['시간대'].iloc[k]) not in ["주간", "전일"]:
                         filtered_data = pd.DataFrame([[year, data['시간대'].iloc[k], data['교통량'].iloc[k]]], columns=["연도", "시간대", "교통량"])
                         final = pd.concat([final, filtered_data])
@@ -102,7 +104,7 @@ for path in file_list:
         
         elif normalize(path) in [normalize("2012_수시교통량.csv"), normalize("2017_수시교통량.csv"), normalize("2007_수시교통량.csv")]:
             if str(data['시간'].iloc[k]) not in ["25", "26", "주간", "전일"]:
-                if unique_number_column.startswith("0013") or unique_number_column.startswith("13"): 
+                if unique_number_column.startswith("0013") or (unique_number_column.startswith("13") and len(str(unique_number_column)) == 3): 
                     time = data['시간'].iloc[k]
                     if normalize(path) == normalize("2017_수시교통량.csv"):
                         if str(data['방향'].iloc[k]) != "0":
@@ -122,6 +124,7 @@ for path in file_list:
                         if(int(time[1]) < 10):
                             time[1] = "0" + time[1]
                         
+                        print(data.iloc[k])
                         
                         time = time[0] + "시~" + time[1] + "시"
 
