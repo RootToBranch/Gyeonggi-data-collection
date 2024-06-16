@@ -31,7 +31,7 @@ time_define_obj = {
     20: "20시~21시",
     21: "21시~22시",
     22: "22시~23시",
-    23: "23시~24시",
+    23: "23시~00시",
     24: "00시~01시"
 }
 
@@ -111,9 +111,9 @@ for path in file_list:
                             continue
 
                     
-                    if normalize(path) == [normalize("2007_수시교통량.csv"), normalize("2012_수시교통량.csv")]:
-                        if str(data['방향'].iloc[k]) != "0":
-                            continue
+                    # if normalize(path) in [normalize("2007_수시교통량.csv"), normalize("2012_수시교통량.csv")]:
+                    #     if str(data['방향'].iloc[k]) != "0":
+                    #         continue
                     
                     if normalize(path) in [normalize("2007_수시교통량.csv"), normalize("2017_수시교통량.csv")]:
                         time = time_define_obj[int(time)]
@@ -124,7 +124,6 @@ for path in file_list:
                         if(int(time[1]) < 10):
                             time[1] = "0" + time[1]
                         
-                        print(data.iloc[k])
                         
                         time = time[0] + "시~" + time[1] + "시"
 
