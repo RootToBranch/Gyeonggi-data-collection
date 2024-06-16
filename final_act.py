@@ -13,7 +13,6 @@ data = data.groupby(['연도', '시간대'])["교통량"].mean()
 # 결과 데이터 파일
 data.to_csv('final_data.csv', encoding = 'utf-8')
 
-plt.title('교통체증 변동 현황')
 
 time_define_array = [
     "00시~01시",
@@ -93,6 +92,30 @@ plt.rcParams['font.sans-serif'] = [font_name]
 # =====================
 
 
+data_2007 = data_2007.sort_values(by='시간대').reset_index(drop=True)
+data_2012 = data_2012.sort_values(by='시간대').reset_index(drop=True)
+data_2017 = data_2017.sort_values(by='시간대').reset_index(drop=True)
+data_2020 = data_2020.sort_values(by='시간대').reset_index(drop=True)
+
+date_arr = ['2007', '2012', '2017', '2020']
+
+
+plt.title('교통체증 변동 현황')
+# i = 0
+
+for dataFrame in [data_2007, data_2012, data_2017, data_2020]:
+    dataFrame['timeline_idx'] = range(24)
+
+    max_y1 = dataFrame['교통량'].max()
+    max_y1_index = dataFrame['교통량'].idxmax()
+    max_y1_x = dataFrame.loc[max_y1_index, 'timeline_idx']
+
+    plt.scatter([max_y1_x], [max_y1], color='red')
+    plt.text(max_y1_x, max_y1, f'{time_define_array[max_y1_x]}, ' + f'{int(max_y1):,}', verticalalignment='bottom', horizontalalignment='left')
+
+# i = i + 1
+# print(max_y1_index)
+plt.ylabel('교통량(평균)')
 plt.plot(time_define_array, data_2007['교통량'], label='2007')
 plt.plot(time_define_array, data_2012['교통량'], label='2012')
 plt.plot(time_define_array, data_2017['교통량'], label='2017')
